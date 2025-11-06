@@ -65,6 +65,6 @@ UI problem?
 
 
 ## Logs
-* **Windows**: `%APPDATA%\task_scheduler_gui\logs`
-* **macOS**: `~/Library/Application Support/task_scheduler_gui/logs`
-* **Linux**: `~/.config/task_scheduler_gui/logs`
+- Windows: `%APPDATA%\task_scheduler_gui\logs`
+- macOS: `~/Library/Application Support/task_scheduler_gui/logs`
+- Linux: `~/.config/task_scheduler_gui/logs`
