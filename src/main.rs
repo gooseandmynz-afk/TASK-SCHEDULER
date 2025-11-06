@@ -311,7 +311,7 @@ impl TaskScheduler {
 
         let tasks_container: Element<Message> = if self.tasks.is_empty() {
             container(
-                text("No tasks yet. Click '+ New Task' to create one.)
+                text("No tasks yet. Click '+ New Task' to create one.")
                     .size(16)
                     .style(iced::theme::Text::Color([0.5, 0.5, 0.5].into())),
             )
