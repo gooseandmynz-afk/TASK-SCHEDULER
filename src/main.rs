@@ -38,8 +38,6 @@ enum Message {
 
     ToggleEnable(usize),
     Tick,
-    StartBackground,
-    BackgroundTick,
     ToggleTheme,
     KeyPress {
         key: keyboard::Key,
@@ -107,11 +105,9 @@ struct TaskScheduler {
     // Toast notifications: (message, created_at)
     toasts: Vec<(String, Instant)>,
     // Keep the tracing-appender guard alive so the non-blocking worker can flush on drop
+    #[allow(dead_code)]
     log_guard: Option<tracing_appender::non_blocking::WorkerGuard>,
     sort_asc: bool,
-    // Background task state (simulated long-running job)
-    background_running: bool,
-    background_progress: f32, // 0.0..=1.0
     // Theming
     is_dark: bool,
 }
@@ -481,8 +477,6 @@ impl Application for TaskScheduler {
             toasts: Vec::new(),
             log_guard,
             sort_asc: true,
-            background_running: false,
-            background_progress: 0.0,
             is_dark: false,
         };
 
@@ -509,9 +503,6 @@ impl Application for TaskScheduler {
         subs.push(time::every(Duration::from_millis(500)).map(|_| Message::ToastTick));
 
         // When a background job is running, also subscribe to a faster tick to drive progress
-        if self.background_running {
-            subs.push(time::every(Duration::from_millis(300)).map(|_| Message::BackgroundTick));
-        }
 
         Subscription::batch(subs)
     }
@@ -531,7 +522,6 @@ impl Application for TaskScheduler {
             button("History").on_press(Message::SwitchTo(Screen::History)),
             button("Save").on_press(Message::Save),
             button("Load").on_press(Message::Load),
-            button("Start Long Task").on_press(Message::StartBackground),
             button(if self.is_dark {
                 "Light Theme"
             } else {
@@ -544,23 +534,7 @@ impl Application for TaskScheduler {
         let status = row![
             text(format!("Tasks: {}", self.tasks.len())),
             text(if self.is_saving { "Saving..." } else { "" }),
-            text(if self.is_loading { "Loading..." } else { "" }),
-            // Background progress indicator (simple textual + ascii bar)
-            text(if self.background_running {
-                let pct = (self.background_progress * 100.0).round();
-                let filled = (self.background_progress * 20.0).round() as usize;
-                let bar = format!(
-                    "[{}{}] {}%",
-                    "#".repeat(filled),
-                    " ".repeat(20 - filled),
-                    pct as i32
-                );
-                bar
-            } else if (self.background_progress - 1.0).abs() < std::f32::EPSILON {
-                "Background: Done".into()
-            } else {
-                String::new()
-            })
+            text(if self.is_loading { "Loading..." } else { "" })
         ]
         .spacing(16)
         .width(Length::Fill);
@@ -836,32 +810,6 @@ impl Application for TaskScheduler {
                             "[{}] Load failed: {}",
                             Local::now().format("%H:%M:%S"),
                             e
-                        ));
-                    }
-                }
-                Command::none()
-            }
-            Message::StartBackground => {
-                if !self.background_running {
-                    self.background_running = true;
-                    self.background_progress = 0.0;
-                    self.history.push(format!(
-                        "[{}] Background task started",
-                        Local::now().format("%H:%M:%S")
-                    ));
-                }
-                Command::none()
-            }
-            Message::BackgroundTick => {
-                if self.background_running {
-                    // Advance simulated progress
-                    self.background_progress += 0.05;
-                    if self.background_progress >= 1.0 {
-                        self.background_progress = 1.0;
-                        self.background_running = false;
-                        self.history.push(format!(
-                            "[{}] Background task complete",
-                            Local::now().format("%H:%M:%S")
                         ));
                     }
                 }
