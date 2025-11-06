@@ -1,126 +1,70 @@
-# User Guide
+Task Scheduler is a desktop app to help you manage tasks that repeat. You can set tasks to run hourly, daily, or weekly.
 
-## Overview
-
-The Task Scheduler is a desktop application that helps you manage and track recurring tasks. This guide covers all features and how to use them effectively.
 
 ## Screens
 
-### Overview Screen
+Overview Screen
+Shows all tasks in a list:\
+- Status: Check/uncheck to enable or disable a task
+- Task Name: Name of the task
+- Interval: Hourly / Daily / Weekly
+- Last Run: Last time the task ran
+- Actions: Delete a task
 
-The main screen shows all your tasks in a sortable list:
 
-- **Status**: Toggle task enabled/disabled
-- **Task Name**: Name of the task
-- **Interval**: How often the task should run (Hourly/Daily/Weekly)
-- **Last Run**: When the task was last executed
-- **Actions**: Delete button for task removal
+You can:
+- Sort tasks by name
+- Add new tasks: **+ New Task**
+- Delete tasks (confirm first)
 
-Features:
-
-- Sort tasks by name (click Sort ↑/↓)
-- Add new tasks (+ New Task button)
-- Delete tasks (with confirmation)
 
 ### New Task Screen
+Create a new task:
+- Enter task name
+- Select interval
+- Click Add/Cancel
 
-Create new tasks with:
-
-- Task name input
-- Interval selection (Hourly/Daily/Weekly)
-- Add/Cancel buttons
 
 ### History Screen
+Shows a list of:
+- Tasks added
+- Tasks deleted
+- Tasks checked
+- Save/load actions
 
-View a chronological log of:
 
-- Task additions
-- Task deletions
-- Task checks
-- Save/Load operations
+## Commands
+- Save tasks = Ctrl + S
+- Add new task = Ctrl + N
+- View history = Ctrl + H
+- Go to  overveiew = Ctrl + O
 
+  
 ## Features
 
-### Task Management
+- Tasks check automatically every minute
+- Only enabled tasks run
+- Tasks save automatically
+- Can switch between light and dark mode
 
-1. **Adding Tasks**:
-
-   - Click "+ New Task" or press Ctrl+N
-   - Enter task name
-   - Select interval
-   - Click "Add"
-
-2. **Enabling/Disabling Tasks**:
-
-   - Click checkbox in Status column
-   - Disabled tasks won't be checked automatically
-
-3. **Deleting Tasks**:
-   - Click "Delete" button
-   - Confirm in dialog
-
-### Automatic Checking
-
-- Tasks are checked every minute
-- Only enabled tasks are checked
-- Tasks run based on their interval since last run
-
-### Theme Support
-
-- Toggle between Light/Dark theme
-- Theme persists between sessions
-
-### Progress Tracking
-
-- Background task progress shown in status bar
-- ASCII progress bar indicates completion
-- Non-blocking operation
-
-### Notifications
-
-- Toast notifications for important events
-- Appears in top-right
-- Auto-dismisses after 3 seconds
-
-### Keyboard Shortcuts
-
-| Shortcut | Action          |
-| -------- | --------------- |
-| Ctrl+S   | Save tasks      |
-| Ctrl+N   | New task        |
-| Ctrl+H   | View history    |
-| Ctrl+O   | Overview screen |
-
-### Persistence
-
-- Tasks auto-save after changes
-- Manual save available (Save button)
-- Load button to refresh from disk
-- Stored in user config directory
 
 ## Troubleshooting
+Task not running?
+- Check if enabled
+- Check last run
+- Check interval
 
-1. **Task not running**:
+Changes not saving?
+- Try manual save
+- Check folder permissions
 
-   - Check if task is enabled
-   - Verify last run time
-   - Ensure interval is appropriate
+UI problem?
+- Switch theme
+- Restart app
+- Check logs
 
-2. **Changes not saving**:
-
-   - Check history for save errors
-   - Try manual save
-   - Verify write permissions
-
-3. **UI issues**:
-   - Try toggling theme
-   - Restart application
-   - Check log files
 
 ## Logs
-
-Log files are stored in:
-
-- Windows: `%APPDATA%\task_scheduler_gui\logs`
-- macOS: `~/Library/Application Support/task_scheduler_gui/logs`
-- Linux: `~/.config/task_scheduler_gui/logs`
+* **Windows**: `%APPDATA%\task_scheduler_gui\logs`
+* **macOS**: `~/Library/Application Support/task_scheduler_gui/logs`
+* **Linux**: `~/.config/task_scheduler_gui/logs`
