@@ -4,7 +4,7 @@ Task Scheduler is a desktop app to help you manage tasks that repeat. You can se
 ## Screens
 
 Overview Screen
-Shows all tasks in a list:\
+Shows all tasks in a list:
 - Status: Check/uncheck to enable or disable a task
 - Task Name: Name of the task
 - Interval: Hourly / Daily / Weekly
