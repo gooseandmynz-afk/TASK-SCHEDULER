@@ -283,7 +283,7 @@ impl TaskScheduler {
                             .width(Length::FillPortion(1))
                             .on_toggle(move |_| Message::ToggleEnable(idx)),
                         text(&task.name).width(Length::FillPortion(4)),
-                        text(&task.interval.to_string()).width(Length::FillPortion(1)),
+                        text(task.interval.to_string()).width(Length::FillPortion(1)),
                         text(if let Some(last) = task.last_run {
                             last.format("%Y-%m-%d %H:%M:%S").to_string()
                         } else {
@@ -665,10 +665,10 @@ impl Application for TaskScheduler {
                     // show a toast and save
                     self.toasts.push(("Task added".into(), Instant::now()));
                     let tasks_clone = self.tasks.clone();
-                    return Command::perform(
+                    Command::perform(
                         async move { save_tasks_cmd(tasks_clone).await.map_err(|e| e.to_string()) },
                         Message::SaveResult,
-                    );
+                    )
                 } else {
                     Command::none()
                 }
@@ -689,10 +689,10 @@ impl Application for TaskScheduler {
                         // show toast for deletion and save
                         self.toasts.push(("Task deleted".into(), Instant::now()));
                         let tasks_clone = self.tasks.clone();
-                        return Command::perform(
+                        Command::perform(
                             async move { save_tasks_cmd(tasks_clone).await.map_err(|e| e.to_string()) },
                             Message::SaveResult,
-                        );
+                        )
                     } else {
                         Command::none()
                     }
@@ -726,20 +726,17 @@ impl Application for TaskScheduler {
             }
             Message::KeyPress { key, modifiers } => {
                 if modifiers.control() || modifiers.command() {
-                    match key {
-                        keyboard::Key::Character(c) => {
-                            let cmd = match c.to_string().as_str() {
-                                "s" => Some(Message::Save),
-                                "n" => Some(Message::SwitchTo(Screen::NewTask)),
-                                "h" => Some(Message::SwitchTo(Screen::History)),
-                                "o" => Some(Message::SwitchTo(Screen::Overview)),
-                                _ => None,
-                            };
-                            if let Some(msg) = cmd {
-                                return self.update(msg);
-                            }
+                    if let keyboard::Key::Character(c) = key {
+                        let cmd = match c.to_string().as_str() {
+                            "s" => Some(Message::Save),
+                            "n" => Some(Message::SwitchTo(Screen::NewTask)),
+                            "h" => Some(Message::SwitchTo(Screen::History)),
+                            "o" => Some(Message::SwitchTo(Screen::Overview)),
+                            _ => None,
+                        };
+                        if let Some(msg) = cmd {
+                            return self.update(msg);
                         }
-                        _ => {}
                     }
                 } else if let keyboard::Key::Character(c) = key {
                     if c == "\u{7f}" {

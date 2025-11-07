@@ -63,6 +63,13 @@ impl Task {
 }
 
 pub fn project_file_path() -> Option<PathBuf> {
+    // Allow tests or users to override the config directory via an env var for isolation.
+    if let Ok(override_dir) = std::env::var("TASK_SCHEDULER_CONFIG_DIR") {
+        let dir = PathBuf::from(override_dir);
+        let _ = fs::create_dir_all(&dir);
+        return Some(dir.join("tasks.json"));
+    }
+
     ProjectDirs::from("com", "example", "task_scheduler_gui").map(|dirs| {
         let dir = dirs.config_dir();
         let _ = fs::create_dir_all(dir);
