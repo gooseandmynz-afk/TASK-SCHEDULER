@@ -75,7 +75,3 @@ cargo run
 - [User Guide](./docs/userguide.md)
 - [Test Plan](./docs/testplan.md)
 - [Architecture](./docs/architecture.md)
-
-## License
-
-MIT License - See LICENSE file for details
